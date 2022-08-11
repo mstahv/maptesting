@@ -49,9 +49,10 @@ public class MainView extends VerticalLayout {
                 el.$server.updateMyLocation(position.coords.latitude,position.coords.longitude);
               },
               error => {
+                 // those ever happen for the great developers :-)
               },
               {enableHighAccuracy: true, timeout: 5000, maximumAge: 1000 }
-            );                
+            );
         """);
     }
 
