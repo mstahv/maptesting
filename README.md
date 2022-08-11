@@ -1,7 +1,8 @@
-# MapTesting
+# Map Testing
 
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
+Contains a trivial test project to show a Map component with
+a marker on Vaadin HQ + a marker following your location
+(if browser permits).
 
 ## Running the application
 
