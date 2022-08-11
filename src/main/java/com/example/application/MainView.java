@@ -25,8 +25,6 @@ public class MainView extends VerticalLayout {
         Coordinate vaadinHQ = new Coordinate(22.3, 60.452);
         View view = map.getView();
         view.setCenter(vaadinHQ);
-        // Should we overload methods accepting Coordinate with double,double ?
-        // view.setCenter(22.244027, 60.175945);
         view.setZoom(10);
         addAndExpand(map);
 
