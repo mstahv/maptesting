@@ -51,7 +51,7 @@ public class Geolocation {
         Geolocation geolocation = new Geolocation();
         geolocation.ui = ui;
 
-        String method = get ? "getPosition" : "watchPosition";
+        String method = get ? "getCurrentPosition" : "watchPosition";
 
         /*
          * Implementation note: would be much nicer/simpler if one could
