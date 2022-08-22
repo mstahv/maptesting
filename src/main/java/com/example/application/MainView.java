@@ -1,11 +1,6 @@
 package com.example.application;
 
-import com.example.application.geolocation.Geolocation;
-import com.example.application.geolocation.GeolocationOptions;
 import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.AbstractSinglePropertyField;
-import com.vaadin.flow.component.ClientCallable;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.map.Map;
@@ -18,10 +13,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.vaadin.firitin.geolocation.Geolocation;
+import org.vaadin.firitin.geolocation.GeolocationOptions;
 
-import java.io.Serializable;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
