@@ -82,7 +82,7 @@ public class MainView extends VerticalLayout {
         });
 
         Button checkOnce = new Button("Check once", e -> {
-                Geolocation.getPosition(
+                Geolocation.getCurrentPosition(
                         event -> {
                             System.out.println(Instant.ofEpochMilli(event.getTimestamp()) + ":" + event.getCoords());
                             updateMyLocation(event.getCoords().getLatitude(), event.getCoords().getLongitude());
