@@ -1,10 +1,12 @@
 package com.example.application;
 
 import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.map.Map;
 import com.vaadin.flow.component.map.configuration.Coordinate;
+import com.vaadin.flow.component.map.configuration.Feature;
 import com.vaadin.flow.component.map.configuration.View;
 import com.vaadin.flow.component.map.configuration.feature.MarkerFeature;
 import com.vaadin.flow.component.notification.Notification;
@@ -13,21 +15,29 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.firitin.geolocation.Geolocation;
 import org.vaadin.firitin.geolocation.GeolocationOptions;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @PageTitle("Map")
 @Route
 public class MainView extends VerticalLayout {
 
+    private final Feature markerFeature;
     private Geolocation geolocation;
     private Map map = new Map();
 
     MarkerFeature myLocation = null;
+
+    @Autowired
+    LocationService locationService;
+    private final String myId = UUID.randomUUID().toString();
 
     public MainView() {
         setSizeFull();
@@ -39,7 +49,7 @@ public class MainView extends VerticalLayout {
         view.setZoom(10);
         addAndExpand(map);
 
-        MarkerFeature markerFeature = new MarkerFeature(vaadinHQ);
+        markerFeature = new MarkerFeature(vaadinHQ);
         map.getFeatureLayer().addFeature(markerFeature);
 
         map.addFeatureClickListener(e -> {
@@ -97,13 +107,29 @@ public class MainView extends VerticalLayout {
     }
 
     private void updateMyLocation(double lat, double lon) {
-        if(myLocation == null) {
-            myLocation = new MarkerFeature();
-            map.getFeatureLayer().addFeature(myLocation);
-        }
         Coordinate coordinate = new Coordinate(lon, lat);
+
+        locationService.updateLocation(myId, coordinate);
+
+        ArrayList<Feature> features = new ArrayList<>(map.getFeatureLayer().getFeatures());
+        features.forEach(f -> map.getFeatureLayer().removeFeature(f));
+
+        // Always show Vaadin HQ
+        map.getFeatureLayer().addFeature(markerFeature);
+
+        // show all users
+        locationService.getLocations().forEach((id, coord) -> {
+            map.getFeatureLayer().addFeature(new MarkerFeature(coord));
+        });
+
+        // focus on yourself
         myLocation.setCoordinates(coordinate);
         map.setCenter(coordinate);
     }
 
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        locationService.clear(myId);
+        super.onDetach(detachEvent);
+    }
 }
